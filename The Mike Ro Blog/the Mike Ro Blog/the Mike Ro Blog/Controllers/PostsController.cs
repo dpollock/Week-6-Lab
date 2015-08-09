@@ -17,6 +17,7 @@ namespace the_Mike_Ro_Blog.Controllers
         // GET: Posts
         public ActionResult Index()
         {
+
             return View(db.Posts.ToList());
         }
 
@@ -47,8 +48,11 @@ namespace the_Mike_Ro_Blog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Text,PostedOn")] Post post)
+        public ActionResult Create(Post post)
         {
+            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+
+            post.Poster = CurrentUser;
             post.PostedOn = DateTime.Now;
             if (ModelState.IsValid)
             {
@@ -56,7 +60,9 @@ namespace the_Mike_Ro_Blog.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            var errors = ModelState.Select(x => x.Value.Errors)
+                          .Where(y => y.Count > 0)
+                          .ToList();
             return View(post);
         }
 

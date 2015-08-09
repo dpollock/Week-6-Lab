@@ -21,9 +21,9 @@ namespace the_Mike_Ro_Blog.Models
         }
         public virtual ICollection<Post> MyPosts { get; set; }
 
-        public virtual ICollection<ApplicationUser> WhoIFollow { get; set; }
+        public virtual ICollection<Follow> WhoIFollow { get; set; }
 
-        public virtual ICollection<ApplicationUser> WhoFollowsMe { get; set; }
+        public virtual ICollection<Follow> WhoFollowsMe { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -42,15 +42,15 @@ namespace the_Mike_Ro_Blog.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Follow>()
-                .HasRequired(w => w.Follower)
-                .WithMany(f => (ICollection<Follow>)f.WhoFollowsMe)
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.WhoFollowsMe)
+                .WithRequired(f => f.Follower)
                 .HasForeignKey(w => w.Follower_Id)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Follow>()
-                .HasRequired(w => w.Followee)
-                .WithMany(f => (ICollection<Follow>)f.WhoIFollow)
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.WhoIFollow)
+                .WithRequired(f => f.Followee)
                 .HasForeignKey(w => w.Followee_Id)
                 .WillCascadeOnDelete(false);
 

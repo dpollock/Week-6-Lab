@@ -14,10 +14,10 @@ namespace the_Mike_Ro_Blog.Models
         [MaxLength(151)]
         public string Text { get; set; }
 
-        [Required]
+       
         public DateTime PostedOn { get; set; }
 
-        [Required]
+        
         public ApplicationUser Poster { get; set; }
 
     }

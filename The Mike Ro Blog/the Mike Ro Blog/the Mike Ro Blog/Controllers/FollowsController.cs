@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -15,9 +16,38 @@ namespace the_Mike_Ro_Blog.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Follows
+        [Authorize]
+        public ActionResult WhoIFollow()
+        {
+            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+            var myfollows = db.Follows.Where(x => x.Follower_Id == CurrentUser.Id);
+            List<WhoIFollowVM> followees = new List<WhoIFollowVM>();
+
+            foreach (Follow u in myfollows)
+            {
+                WhoIFollowVM f = new WhoIFollowVM();
+                var person = db.Users.FirstOrDefault(x => x.Id == u.Followee_Id);
+                f.FolloweeName = person.UserName;
+                f.Since = u.Since;
+                f.StillFollowing = true;
+                followees.Add(f);
+            }
+
+            return View(followees);
+        }
         public ActionResult Index()
         {
-            return View(db.Follows.ToList());
+            List<WhoFollowsWhomVM> pairs = new List<WhoFollowsWhomVM>();
+            foreach (Follow f in db.Follows)
+            {
+                WhoFollowsWhomVM afollowsb = new WhoFollowsWhomVM();
+                afollowsb.FollowerName = db.Users.FirstOrDefault(x => x.Id == f.Follower_Id).UserName;
+                afollowsb.FolloweeName = db.Users.FirstOrDefault(x => x.Id == f.Followee_Id).UserName;
+                pairs.Add(afollowsb);
+            }
+            
+
+            return View(pairs);
         }
 
         // GET: Follows/Details/5
@@ -36,8 +66,11 @@ namespace the_Mike_Ro_Blog.Controllers
         }
 
         // GET: Follows/Create
+        [Authorize]
         public ActionResult Create()
         {
+
+
             return View();
         }
 
@@ -46,13 +79,33 @@ namespace the_Mike_Ro_Blog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Since")] Follow follow)
+        public ActionResult Create(Follow follow)
         {
+            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+            var IFollowYou = db.Users.FirstOrDefault(x => x.UserName == follow.Followee.UserName);
+
+            if (CurrentUser == null || IFollowYou == null)
+            {
+                return View(follow);
+            }
+
+            follow.Follower_Id = CurrentUser.Id;
+            follow.Followee_Id = IFollowYou.Id;
+            follow.Since = DateTime.Now;
+
             if (ModelState.IsValid)
             {
                 db.Follows.Add(follow);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    return Content(e.EntityValidationErrors.ToString());
+                }
+
+                return RedirectToAction("WhoIFollow");
             }
 
             return View(follow);
@@ -84,7 +137,7 @@ namespace the_Mike_Ro_Blog.Controllers
             {
                 db.Entry(follow).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("WhoIFollow");
             }
             return View(follow);
         }
@@ -112,7 +165,7 @@ namespace the_Mike_Ro_Blog.Controllers
             Follow follow = db.Follows.Find(id);
             db.Follows.Remove(follow);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("WhoIFollow");
         }
 
         protected override void Dispose(bool disposing)
