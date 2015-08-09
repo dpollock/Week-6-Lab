@@ -1,4 +1,4 @@
-﻿@model IEnumerable<the_Mike_Ro_Blog.Models.Post>
+﻿@model IEnumerable<the_Mike_Ro_Blog.Models.PostVM>
 
 @{
     ViewBag.Title = "Index";
@@ -12,10 +12,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Text)
+            @Html.DisplayNameFor(model => model.Poster)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PostedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Text)
         </th>
         <th></th>
     </tr>
@@ -23,17 +26,14 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Text)
+            @Html.DisplayFor(modelItem => item.Poster)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PostedOn)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td></tr>
 }
 
 </table>

@@ -28,7 +28,7 @@ namespace the_Mike_Ro_Blog.Controllers
                 WhoIFollowVM f = new WhoIFollowVM();
                 var person = db.Users.FirstOrDefault(x => x.Id == u.Followee_Id);
                 f.FolloweeName = person.UserName;
-                f.Since = u.Since;
+               
                 f.StillFollowing = true;
                 followees.Add(f);
             }
@@ -89,10 +89,18 @@ namespace the_Mike_Ro_Blog.Controllers
                 return View(follow);
             }
 
+            var alreadyfollow = CurrentUser.WhoIFollow.Select(x => x.Followee_Id == follow.Followee_Id);
+
+            if (alreadyfollow != null)
+            {
+               
+                return RedirectToAction("WhoIFollow");
+            }
+
             follow.Follower_Id = CurrentUser.Id;
             follow.Followee_Id = IFollowYou.Id;
-            follow.Since = DateTime.Now;
-
+            
+           
             if (ModelState.IsValid)
             {
                 db.Follows.Add(follow);

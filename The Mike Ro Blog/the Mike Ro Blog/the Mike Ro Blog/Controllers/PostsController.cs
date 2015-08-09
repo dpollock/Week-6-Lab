@@ -15,10 +15,31 @@ namespace the_Mike_Ro_Blog.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Posts
+        [Authorize]
         public ActionResult Index()
         {
+            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+            var postsIfollow = from p in db.Posts
+                               join u in db.Users
+                               on p.Poster equals u
+                               join f in db.Follows
+                               on u.Id equals f.Followee_Id
+                               where f.Follower_Id == CurrentUser.Id.ToString()
+                               select new PostVM()  { Poster = u.UserName, PostedOn = p.PostedOn, Text = p.Text};
+           
+            List<PostVM> postsIsee = postsIfollow.ToList();
 
-            return View(db.Posts.ToList());
+            foreach (Post p in CurrentUser.MyPosts)
+            {
+                PostVM mypost = new PostVM();
+                mypost.Poster = CurrentUser.UserName;
+                mypost.PostedOn = p.PostedOn;
+                mypost.Text = p.Text;
+                postsIsee.Add(mypost);
+            }
+
+
+            return View(postsIsee.OrderByDescending(x => x.PostedOn));
         }
 
         // GET: Posts/Details/5

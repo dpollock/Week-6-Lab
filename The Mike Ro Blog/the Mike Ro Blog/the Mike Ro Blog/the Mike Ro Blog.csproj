@@ -184,25 +184,9 @@
     <Compile Include="Migrations\201508090506502_two.Designer.cs">
       <DependentUpon>201508090506502_two.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201508090523101_three.cs" />
-    <Compile Include="Migrations\201508090523101_three.Designer.cs">
-      <DependentUpon>201508090523101_three.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508090536156_four.cs" />
-    <Compile Include="Migrations\201508090536156_four.Designer.cs">
-      <DependentUpon>201508090536156_four.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508090616335_five.cs" />
-    <Compile Include="Migrations\201508090616335_five.Designer.cs">
-      <DependentUpon>201508090616335_five.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508090622209_six.cs" />
-    <Compile Include="Migrations\201508090622209_six.Designer.cs">
-      <DependentUpon>201508090622209_six.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508091440069_six1.cs" />
-    <Compile Include="Migrations\201508091440069_six1.Designer.cs">
-      <DependentUpon>201508091440069_six1.cs</DependentUpon>
+    <Compile Include="Migrations\201508091655023_three.cs" />
+    <Compile Include="Migrations\201508091655023_three.Designer.cs">
+      <DependentUpon>201508091655023_three.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -210,6 +194,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\PostVM.cs" />
     <Compile Include="Models\WhoFollowsWhomVM.cs" />
     <Compile Include="Models\WhoIFollowVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -299,20 +284,8 @@
     <EmbeddedResource Include="Migrations\201508090506502_two.resx">
       <DependentUpon>201508090506502_two.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508090523101_three.resx">
-      <DependentUpon>201508090523101_three.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508090536156_four.resx">
-      <DependentUpon>201508090536156_four.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508090616335_five.resx">
-      <DependentUpon>201508090616335_five.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508090622209_six.resx">
-      <DependentUpon>201508090622209_six.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508091440069_six1.resx">
-      <DependentUpon>201508091440069_six1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508091655023_three.resx">
+      <DependentUpon>201508091655023_three.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -22,7 +22,7 @@ namespace the_Mike_Ro_Blog.Models
        
         public string Followee_Id { get; set; }
        
-        public DateTime Since { get; set; }
+        
 
     }
 }
