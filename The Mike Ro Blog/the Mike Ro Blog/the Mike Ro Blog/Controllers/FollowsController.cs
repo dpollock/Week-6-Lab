@@ -30,11 +30,33 @@ namespace the_Mike_Ro_Blog.Controllers
                 f.FolloweeName = person.UserName;
                
                 f.StillFollowing = true;
+                f.Follow_Id = u.Id;
                 followees.Add(f);
             }
 
             return View(followees);
         }
+        [Authorize]
+        public ActionResult WhoFollowsMe()
+        {
+            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+            var followingme = db.Follows.Where(x => x.Followee_Id == CurrentUser.Id);
+            List<WhoIFollowVM> followers = new List<WhoIFollowVM>();
+
+            foreach (Follow u in followingme)
+            {
+                WhoIFollowVM f = new WhoIFollowVM();
+                var person = db.Users.FirstOrDefault(x => x.Id == u.Follower_Id);
+                f.FolloweeName = person.UserName;
+
+                f.StillFollowing = true;
+                f.Follow_Id = u.Id;
+                followers.Add(f);
+            }
+
+            return View(followers);
+        }
+
         public ActionResult Index()
         {
             List<WhoFollowsWhomVM> pairs = new List<WhoFollowsWhomVM>();
@@ -79,23 +101,31 @@ namespace the_Mike_Ro_Blog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Follow follow)
+        public ActionResult Create(Follow id)
+          
         {
+            ApplicationUser userToFollow = new ApplicationUser();
+            userToFollow.UserName = id.Followee.UserName;
             var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
-            var IFollowYou = db.Users.FirstOrDefault(x => x.UserName == follow.Followee.UserName);
+            var IFollowYou = db.Users.FirstOrDefault(x => x.UserName == userToFollow.UserName);
 
             if (CurrentUser == null || IFollowYou == null)
             {
-                return View(follow);
+                return View(userToFollow);
             }
 
-            var alreadyfollow = CurrentUser.WhoIFollow.Select(x => x.Followee_Id == follow.Followee_Id);
+            var alreadyfollows = from f in db.Follows
+                                 where f.Follower_Id == CurrentUser.Id
+                                 where f.Followee_Id == IFollowYou.Id
+                                 select f;
 
-            if (alreadyfollow != null)
+            var amIfollowing = alreadyfollows.ToList();
+            if (amIfollowing.Count > 0)
             {
                
                 return RedirectToAction("WhoIFollow");
             }
+            Follow follow = new Follow();
 
             follow.Follower_Id = CurrentUser.Id;
             follow.Followee_Id = IFollowYou.Id;
@@ -104,14 +134,8 @@ namespace the_Mike_Ro_Blog.Controllers
             if (ModelState.IsValid)
             {
                 db.Follows.Add(follow);
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbEntityValidationException e)
-                {
-                    return Content(e.EntityValidationErrors.ToString());
-                }
+                db.SaveChanges();
+               
 
                 return RedirectToAction("WhoIFollow");
             }
@@ -151,18 +175,26 @@ namespace the_Mike_Ro_Blog.Controllers
         }
 
         // GET: Follows/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Follow follow = db.Follows.Find(id);
-            if (follow == null)
+           
+
+           
+
+            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
+
+
+            Follow unfollow = db.Follows.FirstOrDefault(x => x.Id == id);
+            if (unfollow == null)
             {
                 return HttpNotFound();
             }
-            return View(follow);
+            WhoFollowsWhomVM showUnfollow = new WhoFollowsWhomVM();
+            showUnfollow.FollowerName = CurrentUser.UserName;
+            showUnfollow.FolloweeName = db.Users.FirstOrDefault(x => x.Id == unfollow.Followee_Id).UserName;
+            showUnfollow.Follow_Id = unfollow.Id;
+           
+            return  View(showUnfollow);
         }
 
         // POST: Follows/Delete/5
@@ -170,7 +202,7 @@ namespace the_Mike_Ro_Blog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Follow follow = db.Follows.Find(id);
+            Follow follow = db.Follows.FirstOrDefault(x=>x.Id == id);
             db.Follows.Remove(follow);
             db.SaveChanges();
             return RedirectToAction("WhoIFollow");

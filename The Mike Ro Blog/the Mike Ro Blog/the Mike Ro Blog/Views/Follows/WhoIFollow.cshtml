@@ -30,6 +30,9 @@
         <td>
             @Html.EditorFor(modelItem => item.StillFollowing)
         </td>
+        <td>
+            @Html.ActionLink("Unfollow", "Delete", new { id = item.Follow_Id})
+        </td>
         
       
     </tr>

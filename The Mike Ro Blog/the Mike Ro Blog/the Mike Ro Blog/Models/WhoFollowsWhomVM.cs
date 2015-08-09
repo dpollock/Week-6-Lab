@@ -9,5 +9,6 @@ namespace the_Mike_Ro_Blog.Models
     {
         public string FollowerName { get; set; }
         public string FolloweeName { get; set; }
+        public int Follow_Id { get; set; }
     }
 }

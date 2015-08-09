@@ -1,0 +1,40 @@
+﻿
+@model IEnumerable<the_Mike_Ro_Blog.Models.WhoIFollowVM>
+
+@{
+    ViewBag.Title = "WhoFollowsMe";
+}
+
+<h2>Who Follows Me</h2>
+
+
+<p>
+    @Html.ActionLink("Follow Someone", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FolloweeName)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FolloweeName)
+            </td>
+            <td>
+                @Html.ActionLink("Unfollow", "Delete", new { id = item.Follow_Id })
+            </td>
+            <td>
+                @Html.ActionLink("Follow", "Create", new { id = item.FolloweeName})
+            </td>
+
+
+        </tr>
+    }
+
+</table>

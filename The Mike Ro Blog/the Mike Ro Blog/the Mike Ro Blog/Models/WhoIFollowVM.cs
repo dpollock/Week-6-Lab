@@ -10,5 +10,7 @@ namespace the_Mike_Ro_Blog.Models
         public string FolloweeName { get; set; }
       
         public bool StillFollowing { get; set; }
+
+        public int Follow_Id { get; set; }
     }
 }

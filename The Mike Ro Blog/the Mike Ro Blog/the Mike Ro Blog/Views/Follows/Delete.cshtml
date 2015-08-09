@@ -1,4 +1,4 @@
-﻿@model the_Mike_Ro_Blog.Models.Follow
+﻿@model the_Mike_Ro_Blog.Models.WhoFollowsWhomVM
 
 @{
     ViewBag.Title = "Delete";
@@ -10,16 +10,7 @@
 <div>
     <h4>Follow</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Since)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Since)
-        </dd>
-
-    </dl>
+    <p>@Model.FollowerName Follows @Model.FolloweeName</p>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
