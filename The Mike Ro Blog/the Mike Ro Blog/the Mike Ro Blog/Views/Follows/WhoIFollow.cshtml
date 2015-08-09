@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<the_Mike_Ro_Blog.Models.WhoIFollowVM>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "WhoIFollow";
 }
 
-<h2>Index</h2>
+<h2>Who I Follow</h2>
 
 
 <p>
@@ -15,10 +15,6 @@
         <th>
             @Html.DisplayNameFor(model => model.FolloweeName)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StillFollowing)
-        </th>
-       
         <th></th>
     </tr>
 
@@ -27,9 +23,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.FolloweeName)
         </td>
-        <td>
-            @Html.EditorFor(modelItem => item.StillFollowing)
-        </td>
+      
         <td>
             @Html.ActionLink("Unfollow", "Delete", new { id = item.Follow_Id})
         </td>
@@ -39,3 +33,7 @@
 }
 
 </table>
+<div>
+    @Html.ActionLink("Who I Follow", "WhoIFollow")|
+    @Html.ActionLink("Who is following me", "WhoFollowsMe")
+</div>

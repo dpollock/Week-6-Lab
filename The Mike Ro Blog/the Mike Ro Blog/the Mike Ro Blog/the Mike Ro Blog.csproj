@@ -260,14 +260,11 @@
     <Content Include="Views\Follows\Create.cshtml" />
     <Content Include="Views\Follows\Delete.cshtml" />
     <Content Include="Views\Follows\Details.cshtml" />
-    <Content Include="Views\Follows\Edit.cshtml" />
     <Content Include="Views\Follows\WhoIFollow.cshtml" />
     <Content Include="Views\Posts\Create.cshtml" />
     <Content Include="Views\Posts\Delete.cshtml" />
-    <Content Include="Views\Posts\Details.cshtml" />
     <Content Include="Views\Posts\Edit.cshtml" />
     <Content Include="Views\Posts\Index.cshtml" />
-    <Content Include="Views\Follows\Index.cshtml" />
     <Content Include="Views\Follows\WhoFollowsMe.cshtml" />
   </ItemGroup>
   <ItemGroup>

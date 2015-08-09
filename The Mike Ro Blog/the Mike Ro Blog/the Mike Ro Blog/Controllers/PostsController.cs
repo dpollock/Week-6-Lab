@@ -25,7 +25,7 @@ namespace the_Mike_Ro_Blog.Controllers
                                join f in db.Follows
                                on u.Id equals f.Followee_Id
                                where f.Follower_Id == CurrentUser.Id.ToString()
-                               select new PostVM()  { Poster = u.UserName, PostedOn = p.PostedOn, Text = p.Text};
+                               select new PostVM()  { Poster = u.UserName, PostedOn = p.PostedOn, Text = p.Text, Post_Id = p.Id};
            
             List<PostVM> postsIsee = postsIfollow.ToList();
 
@@ -35,26 +35,13 @@ namespace the_Mike_Ro_Blog.Controllers
                 mypost.Poster = CurrentUser.UserName;
                 mypost.PostedOn = p.PostedOn;
                 mypost.Text = p.Text;
+                mypost.Post_Id = p.Id;
+                mypost.IsMine = true;
                 postsIsee.Add(mypost);
             }
 
 
             return View(postsIsee.OrderByDescending(x => x.PostedOn));
-        }
-
-        // GET: Posts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Post post = db.Posts.Find(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            return View(post);
         }
 
         // GET: Posts/Create
@@ -88,14 +75,12 @@ namespace the_Mike_Ro_Blog.Controllers
         }
 
         // GET: Posts/Edit/5
-        public ActionResult Edit(int? id)
+        [Authorize]
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
             Post post = db.Posts.Find(id);
-            if (post == null)
+            if (post == null || post.Poster != CurrentUser)
             {
                 return HttpNotFound();
             }
@@ -107,11 +92,14 @@ namespace the_Mike_Ro_Blog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Text,PostedOn")] Post post)
+        public ActionResult Edit(Post post)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(post).State = EntityState.Modified;
+                Post edited = db.Posts.Find(post.Id);
+                edited.Text = post.Text;
+                
+                db.Entry(edited).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -119,17 +107,17 @@ namespace the_Mike_Ro_Blog.Controllers
         }
 
         // GET: Posts/Delete/5
-        public ActionResult Delete(int? id)
+        [Authorize]
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
             Post post = db.Posts.Find(id);
-            if (post == null)
+            if (post == null || post.Poster != CurrentUser)
             {
                 return HttpNotFound();
             }
+
+          
             return View(post);
         }
 

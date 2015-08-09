@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Posts I follow</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -31,13 +31,22 @@
         <td>
             @Html.DisplayFor(modelItem => item.PostedOn)
         </td>
-        <td>
+        <td><h3>
             @Html.DisplayFor(modelItem => item.Text)
+            </h3>
         </td>
         <td>
-
+            @{ 
+                if (item.IsMine == true)
+                    {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Post_Id})
+                    <p>----</p>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Post_Id})
+                    }
+            }
         </td>
     </tr>
 }
+
 
 </table>

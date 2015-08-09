@@ -57,37 +57,24 @@ namespace the_Mike_Ro_Blog.Controllers
             return View(followers);
         }
 
-        public ActionResult Index()
-        {
-            List<WhoFollowsWhomVM> pairs = new List<WhoFollowsWhomVM>();
-            foreach (Follow f in db.Follows)
-            {
-                WhoFollowsWhomVM afollowsb = new WhoFollowsWhomVM();
-                afollowsb.FollowerName = db.Users.FirstOrDefault(x => x.Id == f.Follower_Id).UserName;
-                afollowsb.FolloweeName = db.Users.FirstOrDefault(x => x.Id == f.Followee_Id).UserName;
-                pairs.Add(afollowsb);
-            }
+        //public ActionResult Index()
+        //{
+            //List<WhoFollowsWhomVM> pairs = new List<WhoFollowsWhomVM>();
+            //foreach (Follow f in db.Follows)
+            //{
+                //WhoFollowsWhomVM afollowsb = new WhoFollowsWhomVM();
+                //afollowsb.FollowerName = db.Users.FirstOrDefault(x => x.Id == f.Follower_Id).UserName;
+                //afollowsb.FolloweeName = db.Users.FirstOrDefault(x => x.Id == f.Followee_Id).UserName;
+                //pairs.Add(afollowsb);
+            //}
             
 
-            return View(pairs);
-        }
+            //return View(pairs);
+        //}
 
         // GET: Follows/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Follow follow = db.Follows.Find(id);
-            if (follow == null)
-            {
-                return HttpNotFound();
-            }
-            return View(follow);
-        }
 
-        // GET: Follows/Create
+            // GET: Follows/Create
         [Authorize]
         public ActionResult Create()
         {
@@ -142,47 +129,12 @@ namespace the_Mike_Ro_Blog.Controllers
 
             return View(follow);
         }
-
-        // GET: Follows/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Follow follow = db.Follows.Find(id);
-            if (follow == null)
-            {
-                return HttpNotFound();
-            }
-            return View(follow);
-        }
-
-        // POST: Follows/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Since")] Follow follow)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(follow).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("WhoIFollow");
-            }
-            return View(follow);
-        }
-
+                                                                                                     
         // GET: Follows/Delete/5
+        [Authorize]
         public ActionResult Delete(int id)
         {
-           
-
-           
-
             var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
-
 
             Follow unfollow = db.Follows.FirstOrDefault(x => x.Id == id);
             if (unfollow == null)
