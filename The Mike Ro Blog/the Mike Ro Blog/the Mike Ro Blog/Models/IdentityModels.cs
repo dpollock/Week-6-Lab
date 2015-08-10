@@ -21,9 +21,9 @@ namespace the_Mike_Ro_Blog.Models
         }
         public virtual ICollection<Post> MyPosts { get; set; }
 
-        public virtual ICollection<Follow> WhoIFollow { get; set; }
+        public virtual ICollection<ApplicationUser> WhoIFollow { get; set; }
 
-        public virtual ICollection<Follow> WhoFollowsMe { get; set; }
+        public virtual ICollection<ApplicationUser> WhoFollowsMe { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -38,23 +38,24 @@ namespace the_Mike_Ro_Blog.Models
             return new ApplicationDbContext();
         }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Follow> Follows { get; set; }
+        //public DbSet<Follow> Follows { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ApplicationUser>()
-                .HasMany(u => u.WhoFollowsMe)
-                .WithRequired(f => f.Follower)
-                .HasForeignKey(w => w.Follower_Id)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<ApplicationUser>()
+            //    .HasMany(u => u.WhoFollowsMe)
+            //   // .WithRequired(f => f.Follower)
+            //   // .HasForeignKey(w => w.Follower_Id)
+            //    .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<ApplicationUser>()
-                .HasMany(u => u.WhoIFollow)
-                .WithRequired(f => f.Followee)
-                .HasForeignKey(w => w.Followee_Id)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<ApplicationUser>()
+            //    .HasMany(u => u.WhoIFollow)
+            //    .WithMany(x=>x.)
+            //    //.WithRequired(f => f.Followee)
+            //    //.HasForeignKey(w => w.Followee_Id)
+            //    .WillCascadeOnDelete(false);
 
-            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
             base.OnModelCreating(modelBuilder);
         }

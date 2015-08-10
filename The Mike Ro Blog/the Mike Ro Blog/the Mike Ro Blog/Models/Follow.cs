@@ -7,20 +7,17 @@ using System.Web;
 
 namespace the_Mike_Ro_Blog.Models
 {
-    public class Follow
+    public class Follow2
     {
-        [Key]
         public int Id { get; set; }
 
-        [NotMapped]
         public ApplicationUser Follower { get; set; }
 
-        [NotMapped]
         public ApplicationUser Followee { get; set; }
 
-        public string Follower_Id { get; set; }
+        //public string Follower_Id { get; set; }
        
-        public string Followee_Id { get; set; }
+        //public string Followee_Id { get; set; }
        
         
 

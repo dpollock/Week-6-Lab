@@ -26,6 +26,7 @@ namespace the_Mike_Ro_Blog.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
         }
     }
 }

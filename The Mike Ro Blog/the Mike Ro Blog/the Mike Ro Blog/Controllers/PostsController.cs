@@ -18,27 +18,31 @@ namespace the_Mike_Ro_Blog.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
-            var postsIfollow = from p in db.Posts
-                               join u in db.Users
-                               on p.Poster equals u
-                               join f in db.Follows
-                               on u.Id equals f.Followee_Id
-                               where f.Follower_Id == CurrentUser.Id.ToString()
-                               select new PostVM()  { Poster = u.UserName, PostedOn = p.PostedOn, Text = p.Text, Post_Id = p.Id};
-           
-            List<PostVM> postsIsee = postsIfollow.ToList();
+            var currentUser = db.Users.Include(x => x.WhoIFollow).FirstOrDefault(x => x.UserName == User.Identity.Name);
 
-            foreach (Post p in CurrentUser.MyPosts)
+
+            var postsIsee = currentUser.MyPosts.Select(p => new PostVM
             {
-                PostVM mypost = new PostVM();
-                mypost.Poster = CurrentUser.UserName;
-                mypost.PostedOn = p.PostedOn;
-                mypost.Text = p.Text;
-                mypost.Post_Id = p.Id;
-                mypost.IsMine = true;
-                postsIsee.Add(mypost);
-            }
+                Poster = currentUser.UserName,
+                PostedOn = p.PostedOn,
+                Text = p.Text,
+                Post_Id = p.Id,
+                IsMine = true
+            }).ToList();
+
+
+            var postsOfPeopleIFollow = db.Posts.Where(x => currentUser.WhoIFollow.Contains(x.Poster))
+                .Select(p => new PostVM()
+                {
+                    Poster = p.Poster.UserName,
+                    PostedOn = p.PostedOn,
+                    Text = p.Text,
+                    Post_Id = p.Id,
+                    IsMine = false
+                }).ToList();
+
+
+            postsIsee.AddRange(postsOfPeopleIFollow);
 
 
             return View(postsIsee.OrderByDescending(x => x.PostedOn));
@@ -98,7 +102,7 @@ namespace the_Mike_Ro_Blog.Controllers
             {
                 Post edited = db.Posts.Find(post.Id);
                 edited.Text = post.Text;
-                
+
                 db.Entry(edited).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -117,7 +121,7 @@ namespace the_Mike_Ro_Blog.Controllers
                 return HttpNotFound();
             }
 
-          
+
             return View(post);
         }
 

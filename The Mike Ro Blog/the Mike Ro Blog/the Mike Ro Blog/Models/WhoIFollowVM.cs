@@ -11,6 +11,6 @@ namespace the_Mike_Ro_Blog.Models
       
         public bool StillFollowing { get; set; }
 
-        public int Follow_Id { get; set; }
+        public string Follow_Id { get; set; }
     }
 }

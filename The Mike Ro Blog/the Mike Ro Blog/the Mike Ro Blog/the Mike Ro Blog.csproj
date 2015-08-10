@@ -170,23 +170,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\FollowsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201508090453098_initial.cs" />
-    <Compile Include="Migrations\201508090453098_initial.Designer.cs">
-      <DependentUpon>201508090453098_initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508090506502_two.cs" />
-    <Compile Include="Migrations\201508090506502_two.Designer.cs">
-      <DependentUpon>201508090506502_two.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508091655023_three.cs" />
-    <Compile Include="Migrations\201508091655023_three.Designer.cs">
-      <DependentUpon>201508091655023_three.cs</DependentUpon>
+    <Compile Include="Migrations\201508101534064_Initial.cs" />
+    <Compile Include="Migrations\201508101534064_Initial.Designer.cs">
+      <DependentUpon>201508101534064_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -276,14 +267,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508090453098_initial.resx">
-      <DependentUpon>201508090453098_initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508090506502_two.resx">
-      <DependentUpon>201508090506502_two.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508091655023_three.resx">
-      <DependentUpon>201508091655023_three.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508101534064_Initial.resx">
+      <DependentUpon>201508101534064_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
